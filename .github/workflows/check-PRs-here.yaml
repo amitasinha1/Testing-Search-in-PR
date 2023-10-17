@@ -1,17 +1,16 @@
-name: "Checks PR body and payload"
+name: Check PR content
+
 on:
   pull_request:
-    types: [opened, edited, ready_for_review]
+    types: [opened, ready_for_review, synchronize]
 
 jobs:
   check_pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR
-        uses: JJ/github-pr-contains-action@releases/v4
-        with:
-          github-token: ${{github.token}}
-          bodyContains: ""
-          bodyDoesNotContain: ""
-          diffContains: "first_name"
+    - name: Check PR
+      uses: amitasinha1/Testing-Search-in-PR@main
+      with:
+        github-token: ${{ github.token }}
+        diffDoesNotContain: 'bad string'
           
