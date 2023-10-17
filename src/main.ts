@@ -1,7 +1,6 @@
-import * as core from "@actions/core";
-const { GitHub, context } = require("@actions/github");
-import parse from "parse-diff";
-import { rexify } from "./utils";
+const core = require('@actions/core');
+const github = require('@actions/github')
+const parse = require('parse-diff')
 
 async function run() {
   try {
@@ -21,17 +20,29 @@ async function run() {
     });
     const files = parse(prDiff)
 
+    // Get changed chunks
+    var changes = ''
+    var additions: number = 0
+    files.forEach(function(file) {
+      additions += file.additions
+      file.chunks.forEach(function(chunk) {
+        chunk.changes.forEach(function(change) {
+          if (change.add) {
+            changes += change.content
+          }
+        })
+      })
+    })
+
     // Check that the pull request diff does not contain the forbidden string
     const diffDoesNotContain = core.getInput('diffDoesNotContain')
-    if (diffDoesNotContain && rexify(diffDoesNotContain).test(changes)) {
-          core.setFailed(
-            "The added code should not contain " + diffDoesNotContain
-          );
+    if (diffDoesNotContain && changes.includes(diffDoesNotContain)) {
+      core.setFailed("The PR diff should not include " + diffDoesNotContain);
     }
 
   } catch (error) {
     core.setFailed(error.message);
   }
-
 }
+
 run();
