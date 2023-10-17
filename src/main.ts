@@ -22,8 +22,10 @@ async function run() {
 
     // Check that the pull request diff does not contain the forbidden string
     const diffDoesNotContain = core.getInput('diffDoesNotContain')
-    if (diffDoesNotContain && changes.includes(diffDoesNotContain)) {
-      core.setFailed("The PR diff should not include " + diffDoesNotContain);
+    if (diffDoesNotContain && rexify(diffDoesNotContain).test(changes)) {
+          core.setFailed(
+            "The added code should not contain " + diffDoesNotContain
+          );
     }
 
   } catch (error) {
