@@ -1,6 +1,7 @@
-const core = require('@actions/core');
-const github = require('@actions/github')
-const parse = require('parse-diff')
+import * as core from "@actions/core";
+const { GitHub, context } = require("@actions/github");
+import parse from "parse-diff";
+import { rexify } from "./utils";
 
 async function run() {
   try {
