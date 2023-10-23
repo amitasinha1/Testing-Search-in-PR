@@ -1,6 +1,6 @@
 name: 'GitHub PR Content Checker'
 description: 'Checks PR diff for keywords'
-branding:
+branding:d
   icon: 'git-pull-request'
   color: 'gray-dark'
 inputs:
