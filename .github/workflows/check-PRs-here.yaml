@@ -1,16 +1,27 @@
-name: Check PR content
+name: Keyword Check
 
 on:
   pull_request:
-    types: [opened, ready_for_review, synchronize]
+    types:
+      - opened
+      - ready_for_review
+      - synchronize
 
 jobs:
-  check_pr:
+  check_keywords:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Check PR
-      uses: amitasinha1/Testing-Search-in-PR@main
+    - name: Check for Keywords in PR Diff
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        github-token: ${{ github.token }}
-        diffDoesNotContain: 'bad string'
-          
+        python-version: 3.x
+    - name: Set up Environment Variables
+      run: |
+        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+    - name: Install Dependencies
+      run: pip install PyGithub
+    - name: Run Python Script
+      run: python check_keywords.py
