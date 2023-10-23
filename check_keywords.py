@@ -24,8 +24,9 @@ def check_keywords_in_pr_diff(repo, pr_number, keywords):
     print(diff, "8 step")
 
     for file in diff:
+        print(file, "9 step")
         file_content = repo.get_contents(file.filename, ref=pr.head.ref).decoded_content.decode('utf-8')
-        print(file_content, "9 step")
+        print(file_content, "10 step")
         for keyword in keywords:
             if keyword.lower() in file_content.lower():
                 keywords_found.append(keyword)
